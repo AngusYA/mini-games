@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Card Memory Game</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://kit.fontawesome.com/de9b64ae1f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header id="global-header">
+        <div id="logo"><a id="logo-container" href="index.html">HOME</a></div>
+        <nav>
+            <ul>
+                <li><a href="quiz.html">SPORTS TRIVIA</a></li>
+                <li><a href="tictactoe.html">TIC-TAC-TOE</a></li>
+                <li><a href="memory.html" class="active-link">MEMORY GAME</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>FLIP CARD MEMORY GAME</h1>
+    <main>
+        <article>
+            <section>
+                <div id="game-board" class="four-by-four">
+                    <div class="game-row">
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                        <div class="game-cell flip-card" onclick="flip(this)"></div>
+                    </div>
+                </div>
+                <span id="currImgURL" style="display: none;"></span>
+            </section>
+            <footer style="justify-content: space-between;">
+                <div style="align-self: center;">Time: <span id="minute">00</span>:<span id="second">00</span></div>
+                <button onclick="newGame()">New Game</button>
+            </footer>
+        </article>
+    </main>
+    <div id="img-source"><a class="plain-link" href="https://www.freepik.com/vectors/design" target="_blank">Image Source</a></div>
+    <footer id="global-footer">
+        <div id="copyright">&copy; 2021 Angus Yeh</div>
+        <div id="social-icons">
+            <a class="social-icon" href="mailto:anguschya@gmail.com">
+                <i class="far fa-envelope"></i>
+            </a>
+            <a class="social-icon" href="https://www.linkedin.com/in/angus-yeh-93446619b/" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script src="js/functions.js"></script>
+
+    <script>
+        var imgLabelArray = [1,2,3,4,5,6,7,8];
+        var originalArrayLength = imgLabelArray.length;
+        for (let i = 0; i < originalArrayLength; i++) {
+            imgLabelArray.push(imgLabelArray[i]);
+        }
+        var randomArray = imgLabelArray.shuffle();
+        for (let i = 0; i < randomArray.length; i++) {
+            var flipCardInner = document.createElement('div');
+            flipCardInner.classList.add('flip-card-inner');
+            var flipCardFront = document.createElement('div');
+            flipCardFront.classList.add('flip-card-front');
+            var flipCardBack = document.createElement('div');
+            flipCardBack.classList.add('flip-card-back');
+            var cardImg = document.createElement('img');
+            cardImg.classList.add('card-img');
+            cardImg.src = 'img/img' + randomArray[i] + '.jpg';
+            flipCardBack.appendChild(cardImg);
+            flipCardInner.appendChild(flipCardFront);
+            flipCardInner.appendChild(flipCardBack);
+            document.getElementsByClassName('game-cell')[i].appendChild(flipCardInner);
+        }
+
+        var firstClick = true;
+        var sec = 0;
+        var stopwatch;
+        
+        function timeCount(val) {
+            return(val > 9 ? val : '0' + val);
+        }
+
+        function startTimeCount() {
+            stopwatch = setInterval(function() {
+                document.getElementById('second').innerText = timeCount(++sec % 60);
+                document.getElementById('minute').innerText = timeCount(parseInt(sec / 60, 10));
+            }, 1000);
+        }
+
+        function flip(element) {
+            element.classList.add('focused');
+            element.children[0].classList.add('flip-card-inner-flipped');
+            document.getElementById('game-board').classList.add('game-cell-mute');
+            if (firstClick === true) {
+                firstClick = false;
+                startTimeCount();
+            }
+            var imgURL = element.getElementsByClassName('card-img')[0].src;
+            var focusedCell = document.getElementsByClassName('focused');
+            var focusedCellCount = focusedCell.length;
+            if (focusedCellCount === 1) {
+                document.getElementById('currImgURL').innerText = imgURL;
+                setTimeout(function() {
+                    document.getElementById('game-board').classList.remove('game-cell-mute');
+                }, 800);
+            } else {
+                checkMatch(imgURL);
+            }
+        }
+        
+        function checkMatch(checker) {
+            var currImgURL = document.getElementById('currImgURL').innerText;
+            var focusedCell = document.getElementsByClassName('focused');
+            if (checker !== currImgURL) {
+                setTimeout(function() {
+                    for (let i = 0; i < focusedCell.length; i++) {
+                        focusedCell[i].children[0].classList.remove('flip-card-inner-flipped');
+                    }
+                    for (let i = 0; i < randomArray.length; i++) {
+                        document.getElementsByClassName('game-cell')[i].classList.remove('focused');
+                    }
+                }, 1500);
+                setTimeout(function() {
+                    document.getElementById('game-board').classList.remove('game-cell-mute');
+                }, 2300);
+            } else {
+                for (let i = 0; i < focusedCell.length; i++) {
+                    focusedCell[i].classList.add('game-cell-mute');
+                }
+                for (let i = 0; i < randomArray.length; i++) {
+                    document.getElementsByClassName('game-cell')[i].classList.remove('focused');
+                }
+                setTimeout(function() {
+                    document.getElementById('game-board').classList.remove('game-cell-mute');
+                }, 800);
+            }
+            var flippedCellCount = document.getElementsByClassName('flip-card-inner-flipped').length;
+            if (flippedCellCount === randomArray.length) {
+                clearInterval(stopwatch);
+            }
+        }
+
+        function newGame() {
+            randomArray = imgLabelArray.shuffle();
+            setTimeout(function() {
+                for (let i = 0; i < randomArray.length; i++) {
+                    document.getElementsByClassName('card-img')[i].src = 'img/img' + randomArray[i] + '.jpg';
+                }
+            }, 800);
+            firstClick = true;
+            sec = 0;
+            document.getElementById('second').innerText = '00';
+            document.getElementById('minute').innerText = '00';
+            clearInterval(stopwatch);
+            for (let i = 0; i < randomArray.length; i++) {
+                document.getElementById('game-board').classList.remove('game-cell-mute');
+                document.getElementsByClassName('game-cell')[i].classList.remove('focused', 'game-cell-mute');
+                document.getElementsByClassName('game-cell')[i].children[0].classList.remove('flip-card-inner-flipped');
+            }
+        }      
+    </script>
+</body>
+</html>

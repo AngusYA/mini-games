@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A web app with 3 mini-games." />
+    <meta name="title" property="og:title" content="Mini Games" />
+    <meta property="og:type" content="Website" />
+    <meta name="image" property="og:image" content="https://live.staticflickr.com/65535/51044611928_edb43aaecb_b.jpg" />
+    <meta name="description" property="og:description" content="Mini Games App" />
+    <meta name="author" content="Angus Yeh" />
+    <title>Mini Games</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://kit.fontawesome.com/de9b64ae1f.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #000;
+        }
+        h1 {
+            margin-top: 108px;
+            color: #fff;
+        }
+        @media only screen and (max-width: 480px) {
+            h1 {
+                margin-top: 134px;
+            }
+            #global-footer {
+                position: fixed;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MINI GAMES</h1>
+    <main>
+        <article>
+            <section>
+                <h2>What do you want to play today?</h2>
+                <a href="quiz.html"><div class="option option-live">SPORTS TRIVIA</div></a>
+                <a href="tictactoe.html"><div class="option option-live">TIC-TAC-TOE (2 players required)</div></a>
+                <a href="memory.html"><div class="option option-live">FLIP CARD MEMORY GAME</div></a>
+            </section>
+        </article>
+    </main>
+    <footer id="global-footer">
+        <div id="copyright">&copy; 2021 Angus Yeh</div>
+        <div id="social-icons">
+            <a class="social-icon" href="mailto:anguschya@gmail.com" target="_blank">
+                <i class="far fa-envelope"></i>
+            </a>
+            <a class="social-icon" href="https://www.linkedin.com/in/angus-yeh-93446619b/" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>

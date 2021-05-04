@@ -1,0 +1,294 @@
+/* Document-wide Styles */
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+a:hover {
+    color: #dc4d26;
+}
+.active-link {
+    color: #dc4d26;
+}
+h1 {
+    margin: 50px auto;
+    text-align: center;
+}
+img {
+    width: 100%;
+}
+
+/* Global Header and Footer */
+
+#global-header, #global-footer {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+#logo {
+    margin-left: 20px;
+}
+#logo-container {
+    border: 1px solid #fff;
+    padding: 5px;
+}
+#logo-container:hover {
+    border: 1px solid #dc4d26;
+}
+#global-header nav {
+    font-size: 14px;
+}
+#global-header nav ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+#global-header nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+#global-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+#copyright {
+    margin-left: 20px;
+}
+#social-icons {
+    display: flex;
+}
+.social-icon {
+    margin-right: 20px;
+}
+
+/* Main Content */
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+article, .result-container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+main header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+}
+article section {
+    padding: 10px;
+}
+article section h2 {
+    margin-top: 10px;
+}
+main footer {
+    border-top: 1px solid #000;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    background-color: #63c0df;
+}
+
+/* ===== for quiz ===== */
+
+.option {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #000;
+}
+.option-live:hover {
+    background-color: #63c0df;
+    cursor: pointer;
+}
+.option-mute {
+    background-color: rgb(224, 224, 224);;
+    color: #ccc;
+    pointer-events: none;
+}
+.correct-answer {
+    background-color: #009944;
+    color: #fff;
+}
+.wrong-answer {
+    background-color: #f0541e;
+    color: #fff;
+}
+#btnResult {
+    display: none;
+}
+.button-mute {
+    background-color: rgb(224, 224, 224);
+    color: #ccc;
+    cursor: default;
+}
+.button-live:hover {
+    color: #000;
+}
+.result-container {
+    display: none;
+}
+.result-message {
+    padding: 20px 10px;
+}
+
+/* ===== for tic-tac-toe ===== */
+
+.player1 {
+    color: #f0541e;
+}
+.player2 {
+    color: #009944;
+}
+#game-board {
+    display: flex;
+    flex-direction: column;
+}
+.three-by-three {
+    width: 306px;
+    margin: 10px auto;
+}
+.game-row {
+    display: flex;
+}
+.game-cell {
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.game-cell-mute {
+    pointer-events: none;
+}
+.game-message {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #000;
+}
+.player1-message, .player2-message {
+    outline: none;
+    color: #fff;
+}
+.player1-message {
+    background-color: #f0541e;
+    border-color: #f0541e;
+}
+.player2-message {
+    background-color: #009944;
+    border-color: #009944;
+}
+
+/* ===== for memory ===== */
+
+.four-by-four {
+    width: 408px;
+    margin: 0 auto;
+}
+.flip-card {
+    background-color: transparent;
+    perspective: 1000px;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+.flip-card-inner-flipped {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.flip-card-front {
+    background-color: #000;
+}
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+#img-source {
+    position: fixed;
+    right: 20px;
+    bottom: 70px;
+}
+.plain-link, .plain-link:hover {
+    color: #000;
+    font-size: 14px;
+}
+.plain-link:hover {
+    text-decoration: underline;
+}
+
+/* Optimization for Mobile Phones */
+
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+        margin: 30px auto;
+    }
+    #global-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    #logo {
+        margin: 10px 0 20px 0;
+    }
+    #global-header nav ul li {
+        margin: 0 10px;
+    }
+    main {
+        margin-bottom: 30px;
+    }
+    article, .result-container {
+        font-size: 14px;
+    }
+    article section h2 {
+        font-size: 1.2em;
+    }
+    .three-by-three {
+        width: 231px;
+    }
+    .game-cell {
+        width: 75px;
+        height: 75px;
+    }
+    .four-by-four {
+        width: 308px;
+    }
+    #img-source {
+        position: unset;
+        text-align: right;
+        margin-bottom: 15px;
+        margin-right: 20px;
+    }
+    #global-footer {
+        position: unset;
+    }
+}

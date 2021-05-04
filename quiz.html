@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Trivia</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://kit.fontawesome.com/de9b64ae1f.js" crossorigin="anonymous"></script>
+</head>
+<body onload="start()">
+    <header id="global-header">
+        <div id="logo"><a id="logo-container" href="index.html">HOME</a></div>
+        <nav>
+            <ul>
+                <li><a href="quiz.html" class="active-link">SPORTS TRIVIA</a></li>
+                <li><a href="tictactoe.html">TIC-TAC-TOE</a></li>
+                <li><a href="memory.html">MEMORY GAME</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>SPORTS TRIVIA</h1>
+    <main>
+        <article id="questionContainer">
+            <header>
+                <div><span id="currQuesIndex" style="display: none;"></span>Question <span id="currQuesNum"></span> of <span id="totalQuesNum"></span></div>
+                <div>Score: <span id="currScore"></span></div>
+            </header>
+            <section>
+                <h2 id="question">Q: What is the...</h2>
+                <div class="option" onclick="checkAnswer(this, 0)">A: </div>
+                <div class="option" onclick="checkAnswer(this, 1)">B: </div>
+                <div class="option" onclick="checkAnswer(this, 2)">C: </div>
+                <div class="option" onclick="checkAnswer(this, 3)">D: </div>
+            </section>
+            <footer>
+                <button id="btnNext" class="button-mute" disabled onclick="nextQuestion()">Next</button>
+                <button id="btnResult" class="button-mute" disabled onclick="showResult()">Result</button>
+            </footer>
+        </article>
+        <section id="resultContainer" class="result-container">
+            <header>
+                <div>Final Score: <span id="finalScore"></span></div>
+            </header>
+            <div id="resultMessage" class="result-message">Message</div>
+            <footer>
+                <button id="btnNew" onclick="newGame()">Play Again</button>
+            </footer>
+        </section>
+    </main>
+    <footer id="global-footer">
+        <div id="copyright">&copy; 2021 Angus Yeh</div>
+        <div id="social-icons">
+            <a class="social-icon" href="mailto:anguschya@gmail.com" target="_blank">
+                <i class="far fa-envelope"></i>
+            </a>
+            <a class="social-icon" href="https://www.linkedin.com/in/angus-yeh-93446619b/" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script src="js/quiz.js"></script>
+    <script src="js/functions.js"></script>
+
+    <script>
+        var currQuestion;
+        var currScore;
+        var quizRandom;
+
+        function start() {
+            currQuestion = 0;
+            currScore = 0;
+            quizRandom = quiz.shuffle();
+            document.getElementById('totalQuesNum').innerText = quizRandom.length;
+            document.getElementById('currScore').innerText = currScore;
+            setQuestion(currQuestion);
+        }
+
+        function setQuestion(qIndex) {
+            document.getElementById('currQuesIndex').innerText = qIndex;
+            document.getElementById('currQuesNum').innerText = qIndex + 1;
+            document.getElementById('question').innerText = quizRandom[qIndex].question;
+            for (let i = 0; i < quizRandom[qIndex].options.length; i++) {
+                document.getElementsByClassName('option')[i].innerText = quizRandom[qIndex].options[i];
+                document.getElementsByClassName('option')[i].classList.add('option-live');
+            }
+        }
+
+        function checkAnswer(element, aIndex) {
+            var answerOptions = document.getElementsByClassName('option');
+            for (let i = 0; i < answerOptions.length; i++) {
+                answerOptions[i].classList.add('option-mute');
+                answerOptions[i].classList.remove('option-live');
+            }
+            var correctAnswer = quizRandom[document.getElementById('currQuesIndex').innerText].answer;
+            if (aIndex === correctAnswer) {
+                element.classList.add('correct-answer');
+                currScore++;
+                document.getElementById('currScore').innerText = currScore;
+            } else {
+                element.classList.add('wrong-answer');
+            }
+            if (currQuestion === quizRandom.length - 1) {
+                document.getElementById('btnResult').disabled = false;
+                document.getElementById('btnResult').classList.remove('button-mute');
+            } else {
+                document.getElementById('btnNext').disabled = false;
+                document.getElementById('btnNext').classList.remove('button-mute');
+            }
+        }
+
+        function nextQuestion() {
+            var answerOptions = document.getElementsByClassName('option');
+            for (let i = 0; i < answerOptions.length; i++) {
+                answerOptions[i].classList.remove('option-mute', 'correct-answer', 'wrong-answer');
+            }
+            currQuestion++;
+            setQuestion(currQuestion);
+            if (currQuestion === quizRandom.length - 1) {
+                document.getElementById('btnNext').style.display = 'none';
+                document.getElementById('btnResult').style.display = 'inline';
+            } else {
+                document.getElementById('btnNext').disabled = true;
+                document.getElementById('btnNext').classList.add('button-mute');
+            }
+        }
+
+        function showResult() {
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'inline';
+            document.getElementById('global-footer').style.position = 'fixed';
+            var scorePercentage = currScore / quizRandom.length * 100;
+            document.getElementById('finalScore').innerText = 'You got ' + currScore + ' out of ' + quizRandom.length + ' correct. (' + scorePercentage + '%)';
+            var resultMessage = document.getElementById('resultMessage');
+            if (scorePercentage === 100) {
+                resultMessage.innerText = 'Wow, that\'s insane! The world just found another genius!';
+            } else if (scorePercentage >= 80) {
+                resultMessage.innerText = 'Congrtulations! You belong to the top tier.';
+            } else if (scorePercentage >= 60) {
+                resultMessage.innerText = 'Good work! You pass the basic level.';
+            } else {
+                resultMessage.innerText = 'Too bad. Please try harder!'
+            }
+            document.getElementById('btnNew').disabled = false;
+            document.getElementById('btnNew').classList.remove('button-mute');
+        }
+
+        function newGame() {
+            document.getElementById('questionContainer').style.display = 'inline';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('global-footer').style.position = '';
+            currQuestion = 0;
+            currScore = 0;
+            quizRandom = quiz.shuffle();
+            document.getElementById('currScore').innerText = currScore;
+            setQuestion(currQuestion);
+            var answerOptions = document.getElementsByClassName('option');
+            for (let i = 0; i < answerOptions.length; i++) {
+                answerOptions[i].classList.remove('option-mute', 'correct-answer', 'wrong-answer');
+            }
+            document.getElementById('btnNext').style.display = 'inline';
+            document.getElementById('btnResult').style.display = 'none';
+            var btns = document.getElementsByTagName('button');
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].disabled = true;
+                btns[i].classList.add('button-mute');
+            }
+        }
+    </script>
+</body>
+</html>

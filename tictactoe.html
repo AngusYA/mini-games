@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tac-toe</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://kit.fontawesome.com/de9b64ae1f.js" crossorigin="anonymous"></script>
+</head>
+<body onload="start()">
+    <header id="global-header">
+        <div id="logo"><a id="logo-container" href="index.html">HOME</a></div>
+        <nav>
+            <ul>
+                <li><a href="quiz.html">SPORTS TRIVIA</a></li>
+                <li><a href="tictactoe.html" class="active-link">TIC-TAC-TOE</a></li>
+                <li><a href="memory.html">MEMORY GAME</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>TIC-TAC-TOE</h1>
+    <main>
+        <article>
+            <header>
+                <div>Player A: <span id="player1CurrScore"></span></div>
+                <div>Player B: <span id="player2CurrScore"></span></div>
+            </header>
+            <section>
+                <div id="game-board" class="three-by-three">
+                    <div class="game-row">
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                        <div class="game-cell"></div>
+                    </div>
+                </div>
+            </section>
+            <footer style="justify-content: space-between;">
+                <div id="gameMessage" class="game-message"></div>
+                <button onclick="newGame()">New Game</button>
+            </footer>
+        </article>
+    </main>
+    <footer id="global-footer">
+        <div id="copyright">&copy; 2021 Angus Yeh</div>
+        <div id="social-icons">
+            <a class="social-icon" href="mailto:anguschya@gmail.com" target="_blank">
+                <i class="far fa-envelope"></i>
+            </a>
+            <a class="social-icon" href="https://www.linkedin.com/in/angus-yeh-93446619b/" target="_blank">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        var player1CurrScore;
+        var player2CurrScore;
+        var gameMessage;
+        var gameCell = document.getElementsByClassName('game-cell');
+
+        function start() {
+            player1CurrScore = 0;
+            player2CurrScore = 0;
+            gameMessage = 'Player A\'s turn...';
+            document.getElementById('player1CurrScore').innerText = player1CurrScore;
+            document.getElementById('player2CurrScore').innerText = player2CurrScore;
+            document.getElementById('gameMessage').innerText = gameMessage;
+            document.getElementById('gameMessage').classList.add('player1-message');
+            clickCell();
+        }
+
+        function clickCell() {
+            for (let i = 0; i < gameCell.length; i++) {
+                gameCell[i].addEventListener('click', function() {
+                    if (gameMessage.charAt(7) === 'A') {
+                        this.innerText = 'O';
+                    } else if (gameMessage.charAt(7) === 'B') {
+                        this.innerText = 'X';
+                    }
+                    this.classList.add('game-cell-mute');
+                    changeMessage(gameMessage);
+                    winner();
+                });        
+            }
+        }
+
+        function changeMessage(msg) {
+            if (msg.charAt(7) === 'A') {
+                gameMessage = 'Player B\'s turn...';
+                document.getElementById('gameMessage').classList.remove('player1-message');
+                document.getElementById('gameMessage').classList.add('player2-message');
+            } else {
+                gameMessage = 'Player A\'s turn...';
+                document.getElementById('gameMessage').classList.remove('player2-message');
+                document.getElementById('gameMessage').classList.add('player1-message');
+            }
+            document.getElementById('gameMessage').innerText = gameMessage;
+        }
+
+        function winner() {
+            if ((gameCell[0].innerText === gameCell[1].innerText && gameCell[1].innerText === gameCell[2].innerText && 
+                gameCell[0].innerText === 'O') ||
+                (gameCell[3].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[5].innerText && gameCell[3].innerText === 'O') ||
+                (gameCell[6].innerText === gameCell[7].innerText && gameCell[7].innerText === gameCell[8].innerText && gameCell[6].innerText === 'O') ||
+                (gameCell[0].innerText === gameCell[3].innerText && gameCell[3].innerText === gameCell[6].innerText && gameCell[0].innerText === 'O') ||
+                (gameCell[1].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[7].innerText && gameCell[1].innerText === 'O') ||
+                (gameCell[2].innerText === gameCell[5].innerText && gameCell[5].innerText === gameCell[8].innerText && gameCell[2].innerText === 'O') ||
+                (gameCell[0].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[8].innerText && gameCell[0].innerText === 'O') ||
+                (gameCell[2].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[6].innerText && gameCell[2].innerText === 'O')
+            ) {
+                player1CurrScore++;
+                document.getElementById('player1CurrScore').classList.add('player1');
+                gameMessage = 'Player A is the winner!';
+                document.getElementById('gameMessage').classList.remove('player2-message');
+                document.getElementById('gameMessage').classList.add('player1-message');
+                for (let i = 0; i < gameCell.length; i++) {
+                    gameCell[i].classList.add('game-cell-mute');
+                }
+            } else if ((gameCell[0].innerText === gameCell[1].innerText && gameCell[1].innerText === gameCell[2].innerText 
+                && gameCell[0].innerText === 'X') ||
+                (gameCell[3].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[5].innerText && gameCell[3].innerText === 'X') ||
+                (gameCell[6].innerText === gameCell[7].innerText && gameCell[7].innerText === gameCell[8].innerText && gameCell[6].innerText === 'X') ||
+                (gameCell[0].innerText === gameCell[3].innerText && gameCell[3].innerText === gameCell[6].innerText && gameCell[0].innerText === 'X') ||
+                (gameCell[1].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[7].innerText && gameCell[1].innerText === 'X') ||
+                (gameCell[2].innerText === gameCell[5].innerText && gameCell[5].innerText === gameCell[8].innerText && gameCell[2].innerText === 'X') ||
+                (gameCell[0].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[8].innerText && gameCell[0].innerText === 'X') ||
+                (gameCell[2].innerText === gameCell[4].innerText && gameCell[4].innerText === gameCell[6].innerText && gameCell[2].innerText === 'X')
+            ) {
+                player2CurrScore++;
+                document.getElementById('player2CurrScore').classList.add('player2');
+                gameMessage = 'Player B is the winner!';
+                document.getElementById('gameMessage').classList.remove('player1-message');
+                document.getElementById('gameMessage').classList.add('player2-message');
+                for (let i = 0; i < gameCell.length; i++) {
+                    gameCell[i].classList.add('game-cell-mute');
+                }
+            } else if (gameCell[0].innerText !== '' && gameCell[1].innerText !== '' && gameCell[2].innerText !== '' && gameCell[3].innerText !== '' && gameCell[4].innerText !== '' && gameCell[5].innerText !== '' && gameCell[6].innerText !== '' && gameCell[7].innerText !== '' && gameCell[8].innerText !== '') {
+                gameMessage = 'It\'s a draw.';
+                document.getElementById('gameMessage').classList.remove('player1-message', 'player2-message');
+            }
+            document.getElementById('player1CurrScore').innerText = player1CurrScore;
+            document.getElementById('player2CurrScore').innerText = player2CurrScore;
+            document.getElementById('gameMessage').innerText = gameMessage;
+        }
+
+        function newGame() {
+            gameMessage = 'Player A\'s turn...';
+            document.getElementById('gameMessage').innerText = gameMessage;
+            document.getElementById('gameMessage').classList.remove('player1-message', 'player2-message');
+            document.getElementById('gameMessage').classList.add('player1-message');
+            for (let i = 0; i < gameCell.length; i++) {
+                gameCell[i].innerText = '';
+                gameCell[i].classList.remove('game-cell-mute');  
+            }
+        }
+    </script>
+</body>
+</html>
